@@ -4,56 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplicativo de Clima</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            text-align: center;
-        }
-        input {
-            padding: 10px;
-            margin-top: 10px;
-            width: 200px;
-        }
-        button {
-            padding: 10px;
-            margin-top: 10px;
-        }
-        #result {
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <h1>Consulte o Clima</h1>
-    <input type="text" id="city" placeholder="Digite a cidade" />
-    <button onclick="getWeather()">Obter Clima</button>
-    <div id="result"></div>
-
-    <script>
-        async function getWeather() {
-            const city = document.getElementById('city').value;
-            const resultDiv = document.getElementById('result');
-
-            try {
-                const response = await fetch(`/weather?city=${city}`);
-                const data = await response.json();
-
-                if (data.main) {
-                    resultDiv.innerHTML = `<h2>Clima em ${data.name}</h2>
-                        <p>Temperatura: ${data.main.temp}°C</p>
-                        <p>Descrição: ${data.weather[0].description}</p>`;
-                } else {
-                    resultDiv.innerHTML = '<p>Cidade não encontrada.</p>';
-                }
-            }   catch (error) {
-                console.error('Erro:', error.response ? error.response.data : error.message);
-                if (error.response && error.response.status === 404) {
-                return res.status(404).json({ error: 'Cidade não encontrada' });
-            }
-                res.status(500).json({ error: 'Erro ao obter dados do clima' });
-            }  
-        }
-    </script>
+    <div class="container">
+        <h1>Consulte o Clima</h1>
+        <input type="text" id="city" placeholder="Digite a cidade">
+        <button onclick="getWeather()">Obter Clima</button>
+        <div id="result"></div>
+    </div>
+    <script src="./app.js"></script>
 </body>
 </html>

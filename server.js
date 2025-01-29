@@ -1,35 +1,34 @@
+require('dotenv').config(); // Carrega variáveis de ambiente do arquivo .env
 const express = require('express');
-const axios = require('axios');
-require('dotenv').config();
-const path = require('path');
-
+const fetch = require('node-fetch');
 const app = express();
-const PORT = 3000;
+const port = 3000;
 
-// Middleware para servir arquivos estáticos
+const apiKey = process.env.API_KEY; // Chave da API no arquivo .env
+
+// Servir arquivos estáticos da pasta 'public'
 app.use(express.static('public'));
 
-// Rota para obter informações sobre o clima
+// Rota para buscar o clima
 app.get('/weather', async (req, res) => {
-    const city = req.query.city; // cidade recebida como parâmetro
-    const apiKey = process.env.API_KEY; // chave da API armazenada no .env
+    const city = req.query.city;
+
+    if (!city) {
+        return res.status(400).json({ error: 'Nome da cidade não fornecido.' });
+    }
+
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`;
 
     try {
-        // Realiza a requisição para a API
-        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
-        res.json(response.data); // Retorna os dados obtidos
+        const response = await fetch(url);
+        const data = await response.json();
+        res.json(data);
     } catch (error) {
-        console.error(error.response.data); // Log do erro para depuração
-        res.status(500).json({ error: 'Erro ao obter dados do clima. Cidade não encontrada ou outro problema.' });
+        res.status(500).json({ error: 'Erro ao buscar dados do clima.' });
     }
 });
 
-// Rota para o HTML
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Inicia o servidor
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
+// Iniciar o servidor
+app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
 });
