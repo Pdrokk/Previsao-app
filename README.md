@@ -49,10 +49,10 @@ Previsão App é um aplicativo de previsão do tempo desenvolvido em Node.js que
 ```
 Previsao-app/
 ├── node_modules/       # Dependências do Node.js
-├── public/             # Arquivos estáticos (CSS, imagens)
-│   ├── css/
-│   │   └── style.css   # Estilos da aplicação
-│   └── images/         # Imagens utilizadas na aplicação
+├── public/             # Arquivos estáticos
+│   ├── Styles/         # Arquivos de estilo
+│   ├── app.js         # Lógica do frontend
+│   └── index.html     # Página principal da aplicação
 ├── .env                # Variáveis de ambiente
 ├── package-lock.json   # Arquivo de bloqueio de versões do npm
 ├── package.json        # Configurações e dependências do projeto
