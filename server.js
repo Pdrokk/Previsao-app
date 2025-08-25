@@ -17,11 +17,22 @@ app.get('/weather', async (req, res) => {
         return res.status(400).json({ error: 'Nome da cidade não fornecido.' });
     }
 
+    if (!apiKey) {
+        return res.status(500).json({ error: 'Chave da API não configurada.' });
+    }
+
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`;
 
     try {
         const response = await fetch(url);
         const data = await response.json();
+
+        if (!response.ok) {
+            return res
+                .status(response.status)
+                .json({ error: data.message || 'Erro ao buscar dados do clima.' });
+        }
+
         res.json(data);
     } catch (error) {
         res.status(500).json({ error: 'Erro ao buscar dados do clima.' });

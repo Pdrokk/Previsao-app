@@ -11,7 +11,7 @@ async function getWeather() {
         const response = await fetch(`/weather?city=${encodeURIComponent(city)}`);
         const data = await response.json();
 
-        if (data.cod === 200) {
+        if (response.ok) {
             resultDiv.innerHTML = `
                 <strong>Clima em ${data.name}:</strong><br>
                 Temperatura: ${data.main.temp}°C<br>
@@ -20,7 +20,7 @@ async function getWeather() {
                 Vento: ${data.wind.speed} m/s
             `;
         } else {
-            resultDiv.innerHTML = 'Cidade não encontrada.';
+            resultDiv.innerHTML = data.error || 'Cidade não encontrada.';
         }
     } catch (error) {
         resultDiv.innerHTML = 'Erro ao buscar o clima. Tente novamente mais tarde.';
